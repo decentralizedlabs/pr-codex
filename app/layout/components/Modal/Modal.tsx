@@ -8,7 +8,7 @@ import { useAppContext } from "app/layout/context"
 const Modal = () => {
   const { modalView, setModalView } = useAppContext()
   const { name, cross, params } = modalView
-  let content: JSX.Element
+  let content: JSX.Element = <></>
   const modalRef = useRef<any>(null)
 
   switch (name) {
