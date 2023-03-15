@@ -6,7 +6,7 @@ import { Octokit } from "@octokit/rest"
 import { Webhooks } from "@octokit/webhooks"
 
 // export async function POST(req: NextRequest, res: NextResponse) {
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   const body = req.body as any
   console.log(body)
 
