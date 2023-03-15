@@ -11,7 +11,11 @@
   "dependencies": {
     "@headlessui/react": "^1.7.4",
     "@next/font": "^13.0.4",
-    "@rainbow-me/rainbowkit": "^0.8.0",
+    "@octokit/app": "^13.1.2",
+    "@octokit/auth-app": "^4.0.9",
+    "@octokit/rest": "^19.0.7",
+    "@octokit/webhooks": "^10.7.0",
+    "@rainbow-me/rainbowkit": "^0.12.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
@@ -21,6 +25,7 @@
     "ethers": "^5.7.2",
     "next": "^13.0.4",
     "next-themes": "^0.2.1",
+    "openai": "^3.2.1",
     "postcss-import": "^15.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,7 +33,7 @@
     "remark-html": "^15.0.1",
     "server-only": "^0.0.1",
     "typescript": "^4.9.3",
-    "wagmi": "^0.8.9"
+    "wagmi": "^0.12.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

@@ -1,16 +1,17 @@
 "use client"
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit"
+import { createClient, configureChains, WagmiConfig } from "wagmi"
+import { mainnet } from "wagmi/chains"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { publicProvider } from "wagmi/providers/public"
-import { chain, createClient, configureChains, WagmiConfig } from "wagmi"
 import "@rainbow-me/rainbowkit/styles.css"
 import { appName } from "app/layout/components/DefaultHead/DefaultHead"
 
 const env = String(process.env.NEXT_PUBLIC_ENV)
 const alchemyId = String(process.env.NEXT_PUBLIC_ALCHEMY_ID)
 
-const customChains = [chain[env]]
+const customChains = [mainnet]
 const { chains, provider } = configureChains(customChains, [
   alchemyProvider({ apiKey: alchemyId }),
   publicProvider()
