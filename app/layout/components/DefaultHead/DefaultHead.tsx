@@ -1,10 +1,10 @@
 import Script from "next/script"
 import { accounts } from "app/layout/components/Social/Social"
 
-export const appName = "Myapp"
-export const appTitle = "Myapp – The best website ever"
+export const appName = "PR-Codex"
+export const appTitle = "PR-Codex"
 export const appDescription =
-  "You have stumbled upon the best website ever. Well done!"
+  "An AI bot that explains and summarizes PR code diffs, directly on Github. Powered by ChatGPT"
 export const appUrl = process.env.NEXT_PUBLIC_APP_URL
 export const twitterAccount = accounts.twitter.split("twitter.com/").pop()
 

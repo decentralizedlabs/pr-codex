@@ -48,6 +48,7 @@ export default function Homepage() {
                   external
                 />
               </div>
+              <p className="pt-4 text-sm text-gray-400">PR-Codex is free</p>
             </div>
             <img
               src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
