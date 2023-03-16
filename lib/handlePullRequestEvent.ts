@@ -1,0 +1,105 @@
+import { AuthInterface } from "@octokit/auth-app/dist-types/types"
+import { Octokit } from "@octokit/rest"
+import { parseDiff } from "@utils/parsediff"
+import { Configuration, OpenAIApi } from "openai"
+
+export async function handlePullRequestEvent(
+  payload: any,
+  auth: AuthInterface
+) {
+  // Get relevant PR information
+  const pr = payload.pull_request
+  const installationId = payload.installation.id
+  const { owner, repo, number } = {
+    owner: pr.base.repo.owner.login,
+    repo: pr.base.repo.name,
+    number: pr.number
+  }
+
+  // Authenticate as the GitHub App installation
+  const { token } = await auth({ type: "installation", installationId })
+
+  // Create a new Octokit instance with the authenticated token
+  const octokit = new Octokit({ auth: token })
+
+  let firstComment: any
+
+  if (payload.action == "synchronize") {
+    for await (const response of octokit.paginate.iterator(
+      octokit.rest.issues.listComments,
+      {
+        owner,
+        repo,
+        issue_number: number
+      }
+    )) {
+      for (const comment of response.data) {
+        if (comment.user.login === "pr-aide[bot]") {
+          firstComment = comment
+          break
+        }
+      }
+      if (firstComment) {
+        break
+      }
+    }
+  }
+
+  // Get the diff content using Octokit and GitHub API
+  const compareResponse = await octokit.rest.repos.compareCommits({
+    owner,
+    repo,
+    base: pr.base.sha,
+    head: pr.head.sha,
+    mediaType: {
+      format: "diff"
+    }
+  })
+  const diffContent = String(compareResponse.data)
+
+  const maxChanges = 300
+  const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY
+  })
+  const openai = new OpenAIApi(configuration)
+
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes and provides an estimate of the effort already made to implement them. Then you conclude with a comprehensive summary formatted as a bullet list.${
+          skippedFiles
+            ? " After the list, add a markdown note mentioning that some files were skipped due to too many changes."
+            : ""
+        }`
+      },
+      {
+        role: "user",
+        content: `Here is the code diff:\n${parsedFiles.join("")}`
+      }
+    ],
+    temperature: 0.6
+  })
+  const summary = completion.data.choices[0].message.content
+
+  if (firstComment) {
+    // Edit pinned bot comment to the PR
+    await octokit.issues.updateComment({
+      owner,
+      repo,
+      comment_id: firstComment.id,
+      body: summary
+    })
+  } else {
+    // Add a comment to the PR
+    await octokit.issues.createComment({
+      owner,
+      repo,
+      issue_number: number,
+      body: summary
+    })
+  }
+}
