@@ -17,7 +17,7 @@ export async function getFirstComment(
     }
   )) {
     for (const comment of response.data) {
-      if (comment.user.login === "pr-aide[bot]") {
+      if (comment.user.login === "pr-codex[bot]") {
         firstComment = comment
         break
       }
