@@ -1,5 +1,6 @@
 import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
+import { getFirstComment } from "@utils/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
 import { openai } from "./openAi"
 
@@ -22,28 +23,10 @@ export async function handlePullRequestEvent(
   // Create a new Octokit instance with the authenticated token
   const octokit = new Octokit({ auth: token })
 
-  let firstComment: any
-
-  if (payload.action == "synchronize") {
-    for await (const response of octokit.paginate.iterator(
-      octokit.rest.issues.listComments,
-      {
-        owner,
-        repo,
-        issue_number: number
-      }
-    )) {
-      for (const comment of response.data) {
-        if (comment.user.login === "pr-aide[bot]") {
-          firstComment = comment
-          break
-        }
-      }
-      if (firstComment) {
-        break
-      }
-    }
-  }
+  // Get the first comment from the bot
+  const firstComment =
+    payload.action == "synchronize" &&
+    (await getFirstComment(octokit, owner, repo, number))
 
   // Get the diff content using Octokit and GitHub API
   const compareResponse = await octokit.rest.repos.compareCommits({
