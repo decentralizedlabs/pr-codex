@@ -6,5 +6,5 @@ body {
 }
 
 body {
-  @apply text-black bg-white;
+  @apply text-white bg-black;
 }

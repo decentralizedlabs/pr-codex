@@ -1,5 +1,5 @@
 h1 {
-  @apply text-3xl font-black sm:text-5xl;
+  @apply text-3xl sm:text-5xl;
   letter-spacing: 0.005em;
 }
 
@@ -12,7 +12,7 @@ h3 {
 }
 
 a {
-  @apply font-medium text-black cursor-pointer hover:text-blue-600;
+  @apply font-medium cursor-pointer hover:text-yellow-300;
   text-decoration: none;
 }
 
@@ -23,11 +23,7 @@ a {
 .highlight {
   text-decoration-line: underline;
   text-decoration-style: solid;
-  text-decoration-color: theme("colors.blue.600");
-  text-decoration-thickness: 2px;
-  text-underline-offset: 1px;
-}
-
-.dark .highlight {
-  text-decoration-color: theme("colors.blue.300");
+  text-decoration-color: theme("colors.yellow.300");
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 1.5px;
 }

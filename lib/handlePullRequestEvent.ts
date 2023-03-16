@@ -2,7 +2,7 @@ import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
 import { getFirstComment } from "@utils/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
-import { openai } from "./openAi"
+import { openai } from "./openAI"
 
 export async function handlePullRequestEvent(
   payload: any,
