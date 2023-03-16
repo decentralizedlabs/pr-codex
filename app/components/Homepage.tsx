@@ -37,14 +37,14 @@ export default function Homepage() {
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                 PR-Codex
               </h1>
-              <p className="max-w-xl mx-auto mt-6 text-lg leading-8 text-gray-300">
-                A github app to explain and summarize code diffs in pull
-                requests. Powered by ChatGPT.
+              <p className="max-w-[40rem] mx-auto mt-6 text-lg leading-8 text-gray-300">
+                A github app to summarize code diffs in pull requests. Powered
+                by ChatGPT.
               </p>
               <div className="mt-10">
                 <Button
                   label="Install on your repo"
-                  href="https://github.com/apps/pr-aide/installations/new"
+                  href="https://github.com/apps/pr-codex/installations/new"
                   external
                 />
               </div>
