@@ -60,46 +60,49 @@ export async function handlePullRequestEvent(
   const maxChanges = 300
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
 
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-  })
-  const openai = new OpenAIApi(configuration)
-
-  const completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes and provides an estimate of the effort already made to implement them. Then you conclude with a comprehensive summary formatted as a bullet list.${
-          skippedFiles
-            ? " After the list, add a markdown note mentioning that some files were skipped due to too many changes."
-            : ""
-        }`
-      },
-      {
-        role: "user",
-        content: `Here is the code diff:\n${parsedFiles.join("")}`
-      }
-    ],
-    temperature: 0.6
-  })
-  const summary = completion.data.choices[0].message.content
-
-  if (firstComment) {
-    // Edit pinned bot comment to the PR
-    await octokit.issues.updateComment({
-      owner,
-      repo,
-      comment_id: firstComment.id,
-      body: summary
+  // If there are changes, trigger workflow
+  if (parsedFiles.join("").trim().length != 0) {
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY
     })
-  } else {
-    // Add a comment to the PR
-    await octokit.issues.createComment({
-      owner,
-      repo,
-      issue_number: number,
-      body: summary
+    const openai = new OpenAIApi(configuration)
+
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes and provides an estimate of the effort already made to implement them. Then continue with a comprehensive summary formatted as a bullet list.${
+            skippedFiles
+              ? " After the list, add a markdown note mentioning that some files were skipped due to too many changes."
+              : ""
+          }`
+        },
+        {
+          role: "user",
+          content: `Here is the code diff:\n${parsedFiles.join("")}`
+        }
+      ],
+      temperature: 0.6
     })
+    const summary = completion.data.choices[0].message.content
+
+    if (firstComment) {
+      // Edit pinned bot comment to the PR
+      await octokit.issues.updateComment({
+        owner,
+        repo,
+        comment_id: firstComment.id,
+        body: summary
+      })
+    } else {
+      // Add a comment to the PR
+      await octokit.issues.createComment({
+        owner,
+        repo,
+        issue_number: number,
+        body: summary
+      })
+    }
   }
 }
