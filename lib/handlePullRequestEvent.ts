@@ -40,6 +40,9 @@ export async function handlePullRequestEvent(
   })
   const diffContent = String(compareResponse.data)
 
+  // Parse the diff content and return parsed files and skipped files.
+  // This function will only parse the first 300 changes in a file.
+  // The rest of the changes will be skipped.
   const maxChanges = 300
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
   const codeDiff = parsedFiles.join("").trim()
