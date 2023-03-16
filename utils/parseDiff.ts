@@ -1,10 +1,11 @@
-type FileChange = { parsedFiles: string[]; skippedFiles: boolean }
+type FileChange = { parsedFiles: string[]; skippedFiles: string[] }
 
 export function parseDiff(diff: string, maxChanges: number): FileChange {
-  let skippedFiles: boolean
+  let skippedFiles: string[] = []
   const files = diff.split(/diff --git /).slice(1)
   const parsedFiles = files.map((file) => {
     const lines = file.split("\n")
+    const filepath = lines[0].split(" ")[1]
     const mainContent = lines.slice(4)
     const changes = mainContent.filter(
       (line) => line.startsWith("+") || line.startsWith("-")
@@ -13,7 +14,7 @@ export function parseDiff(diff: string, maxChanges: number): FileChange {
     if (changes <= maxChanges) {
       return file
     }
-    skippedFiles = true
+    skippedFiles.push(filepath.slice(2))
   })
   return { parsedFiles, skippedFiles }
 }

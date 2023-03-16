@@ -2,6 +2,7 @@ import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
 import { getFirstComment } from "@utils/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
+import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 import { openai } from "./openAI"
 
 export async function handlePullRequestEvent(
@@ -40,32 +41,37 @@ export async function handlePullRequestEvent(
   })
   const diffContent = String(compareResponse.data)
 
-  // Parse the diff content and return parsed files and skipped files.
-  // This function will only parse the first 300 changes in a file.
-  // The rest of the changes will be skipped.
-  const maxChanges = 300
+  // Parses the diff content and returns the parsed files.
+  // If the number of changes in a file is greater than 1k changes, the file will be skipped.
+  // The codeDiff is the joined string of parsed files, up to a max length of 10k.
+  const maxChanges = 1000
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
-  const codeDiff = parsedFiles.join("").trim()
+  const codeDiff = joinStringsUntilMaxLength(parsedFiles, 10000)
 
   // If there are changes, trigger workflow
   if (codeDiff.length != 0) {
+    const prompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes.${
+      skippedFiles.length != 0
+        ? ` After the list, conclude with "> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
+            ","
+          )}.`
+        : ""
+    }`
+
+    console.log(prompt)
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes. Then follow up with a comprehensive summary formatted as a bullet list.${
-            skippedFiles
-              ? " After the list, add a markdown note mentioning that some files were skipped due to too many changes."
-              : ""
-          }`
+          content: prompt
         },
         {
           role: "user",
           content: `Here is the code diff:\n${codeDiff}`
         }
       ],
-      temperature: 0.5
+      temperature: 0.7
     })
     const summary = completion.data.choices[0].message.content
 
