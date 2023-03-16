@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@components/ui"
+import { Footer } from "app/layout/components"
 
 export default function Homepage() {
   return (
@@ -31,7 +32,7 @@ export default function Homepage() {
             </defs>
           </svg>
         </div>
-        <div className="pt-24 pb-10 sm:pt-32">
+        <div className="pt-24 pb-16 sm:pt-32">
           <div className="px-6 mx-auto max-w-7xl lg:px-8">
             <div className="max-w-2xl mx-auto text-center">
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
@@ -50,13 +51,19 @@ export default function Homepage() {
               </div>
               <p className="pt-4 text-sm text-gray-400">PR-Codex is free</p>
             </div>
-            <img
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-              alt="App screenshot"
-              width={2432}
-              height={1442}
-              className="mt-16 rounded-md shadow-2xl bg-white/5 ring-1 ring-white/10 sm:mt-24"
-            />
+
+            <video
+              className="mt-16 rounded-xl ring-1 ring-white/10 sm:mt-24"
+              width={1920}
+              height={1244}
+              autoPlay
+              loop
+              muted
+              controls
+              controlsList="nodownload"
+            >
+              <source src="/demo.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
         <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
@@ -85,6 +92,7 @@ export default function Homepage() {
           </svg>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

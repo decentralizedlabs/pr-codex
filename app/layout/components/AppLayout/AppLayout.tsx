@@ -6,7 +6,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="relative flex flex-col justify-between min-h-screen">
         {/* <Navbar /> */}
         {children}
-        <Footer />
+        {/* <Footer /> */}
         <Modal />
       </div>
     </>
