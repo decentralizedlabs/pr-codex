@@ -49,7 +49,7 @@ export default function Homepage() {
                   external
                 />
               </div>
-              <p className="pt-4 text-sm text-gray-400">PR-Codex is free</p>
+              <p className="pt-4 text-sm text-gray-400">It&apos;s free</p>
             </div>
 
             <video
