@@ -1,7 +1,7 @@
 import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
-import { parseDiff } from "@utils/parsediff"
-import { Configuration, OpenAIApi } from "openai"
+import { parseDiff } from "@utils/parseDiff"
+import { openai } from "./openAi"
 
 export async function handlePullRequestEvent(
   payload: any,
@@ -59,20 +59,16 @@ export async function handlePullRequestEvent(
 
   const maxChanges = 300
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
+  const codeDiff = parsedFiles.join("").trim()
 
   // If there are changes, trigger workflow
-  if (parsedFiles.join("").trim().length != 0) {
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY
-    })
-    const openai = new OpenAIApi(configuration)
-
+  if (codeDiff.length != 0) {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes and provides an estimate of the effort already made to implement them. Then continue with a comprehensive summary formatted as a bullet list.${
+          content: `You are a Git diff assistant. You are given a code diff and you must provide a simple description in <200 chars which sums up the changes. Then follow up with a comprehensive summary formatted as a bullet list.${
             skippedFiles
               ? " After the list, add a markdown note mentioning that some files were skipped due to too many changes."
               : ""
@@ -80,10 +76,10 @@ export async function handlePullRequestEvent(
         },
         {
           role: "user",
-          content: `Here is the code diff:\n${parsedFiles.join("")}`
+          content: `Here is the code diff:\n${codeDiff}`
         }
       ],
-      temperature: 0.6
+      temperature: 0.5
     })
     const summary = completion.data.choices[0].message.content
 
