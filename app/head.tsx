@@ -16,8 +16,8 @@ export default async function Head() {
       <meta property="og:title" content={appTitle} />
       <meta property="og:description" content={appDescription} />
       <meta property="og:url" content={appUrl} />
-      <meta property="og:image" content={`${appUrl}/og_image.png"`} />
-      <meta property="og:image:alt" content={`${appName} cover image"`} />
+      <meta property="og:image" content={`${appUrl}/og_image.png`} />
+      <meta property="og:image:alt" content={`${appName} cover image`} />
       <meta name="twitter:image" content={`${appUrl}/twitter_card.png`} />
     </>
   )
