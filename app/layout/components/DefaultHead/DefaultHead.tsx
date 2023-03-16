@@ -39,6 +39,7 @@ export default function DefaultHead() {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={twitterAccount} />
       <meta name="twitter:creator" content={twitterAccount} />
+      <meta name="twitter:title" content={appTitle} />
 
       <Script
         id="sa_event"
