@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="120" height="120" src="/public/og_image_red.jpg">
+  <img width="120" height="120" src="/public/og_image_red.png">
 </p>
 
 ## PR-Codex
