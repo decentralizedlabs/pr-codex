@@ -58,7 +58,6 @@ export async function handlePullRequestEvent(
         : ""
     }`
 
-    console.log(prompt)
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
