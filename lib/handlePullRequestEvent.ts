@@ -50,7 +50,7 @@ export async function handlePullRequestEvent(
 
   // If there are changes, trigger workflow
   if (codeDiff.length != 0) {
-    const prompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes. Make sure to use backtick \` when mentioning files, functions, objects and similar. ${
+    const prompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes. Be concise. Make sure to use backticks \` when mentioning files, functions, objects and similar. ${
       skippedFiles.length != 0
         ? ` After the list, conclude with "\n\n> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
             ","
