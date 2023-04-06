@@ -9,13 +9,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const payload = await req.json()
 
   const appId = Number(process.env.GH_APP_ID)
-  const privateKey = String(process.env.GH_PK)
+  const privateKey = process.env.GH_PK
+  const clientId = process.env.GH_APP_CLIENT_ID
+  const clientSecret = process.env.GH_APP_CLIENT_SECRET
 
   const auth = createAppAuth({
     appId,
     privateKey,
-    clientId: "Iv1.ff37ab5d8e4202c2",
-    clientSecret: "fabeff6ff5149dc6067bacccdae6cbe24cae7998"
+    clientId,
+    clientSecret
   })
 
   if (payload.action == "opened" || payload.action == "synchronize") {
