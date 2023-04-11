@@ -1,9 +1,18 @@
-"use client"
-
 import { Button } from "@components/ui"
+import { getInstallations } from "@utils/github/getInstallations"
+import { getRepositories } from "@utils/github/getRepositories"
 import { Footer } from "app/layout/components"
+export const revalidate = 60 * 60 * 3 // 3 hours
 
-export default function Homepage() {
+export default async function Homepage() {
+  const installations = await getInstallations()
+  const ids = installations.map((installation) => Number(installation.id))
+  const repositories = await getRepositories(ids)
+  const reposByStars = repositories.sort(
+    (a, b) => b.stargazers_count - a.stargazers_count
+  )
+  const topRepos = reposByStars.slice(0, 3)
+
   return (
     <div className="overflow-hidden">
       <div className="relative isolate pt-14">

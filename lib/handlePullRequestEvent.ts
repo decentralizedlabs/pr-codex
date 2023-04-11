@@ -1,6 +1,6 @@
 import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
-import { getFirstComment } from "@utils/getFirstComment"
+import { getFirstComment } from "@utils/github/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 import { openai } from "./openAI"
