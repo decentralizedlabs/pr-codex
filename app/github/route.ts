@@ -24,5 +24,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await handlePullRequestEvent(payload, auth)
   }
 
-  return res
+  return res.json()
 }
