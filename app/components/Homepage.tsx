@@ -8,7 +8,8 @@ export default async function Homepage() {
   const installations = await getInstallations()
   const ids = installations.map((installation) => Number(installation.id))
   const repositories = await getRepositories(ids)
-  const reposByStars = repositories.sort(
+  const publicRepos = repositories.filter((repo) => !repo.private)
+  const reposByStars = publicRepos.sort(
     (a, b) => b.stargazers_count - a.stargazers_count
   )
   const topRepos = reposByStars.slice(0, 3)
