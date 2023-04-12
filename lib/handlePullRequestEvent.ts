@@ -5,21 +5,14 @@ import { parseDiff } from "@utils/parseDiff"
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 import { openai } from "./openAI"
 
-export async function handlePullRequestEvent(
-  payload: any,
-  auth: AuthInterface
-) {
+export async function handlePullRequestEvent(payload: any, token: string) {
   // Get relevant PR information
   const pr = payload.pull_request
-  const installationId = payload.installation.id
   const { owner, repo, number } = {
     owner: pr.base.repo.owner.login,
     repo: pr.base.repo.name,
     number: pr.number
   }
-
-  // Authenticate as the GitHub App installation
-  const { token } = await auth({ type: "installation", installationId })
 
   // Create a new Octokit instance with the authenticated token
   const octokit = new Octokit({ auth: token })
