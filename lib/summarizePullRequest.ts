@@ -1,11 +1,10 @@
-import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
 import { getFirstComment } from "@utils/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 import { openai } from "./openAI"
 
-export async function handlePullRequestEvent(payload: any, token: string) {
+export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
   const pr = payload.pull_request
   const { owner, repo, number } = {
@@ -13,9 +12,6 @@ export async function handlePullRequestEvent(payload: any, token: string) {
     repo: pr.base.repo.name,
     number: pr.number
   }
-
-  // Create a new Octokit instance with the authenticated token
-  const octokit = new Octokit({ auth: token })
 
   // Get the first comment from the bot
   const firstComment =
