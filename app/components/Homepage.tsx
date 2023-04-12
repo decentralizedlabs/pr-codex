@@ -129,7 +129,7 @@ export default async function Homepage() {
                             className="mr-2 rounded-full"
                           />
                           <a
-                            className="font-bold text-white hover:text-blue-400"
+                            className="text-sm font-semibold text-white hover:text-blue-400"
                             href={repo.html_url}
                           >
                             {repo.full_name}
