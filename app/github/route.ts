@@ -14,5 +14,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await summarizePullRequest(payload, octokit)
   }
 
-  return res
+  return res.json()
 }
