@@ -2,11 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     // "strict": true,
@@ -20,36 +16,30 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ]
+      "@lib/*": ["lib/*"],
+      "@assets/*": ["assets/*"],
+      "@config/*": ["config/*"],
+      "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"]
     },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "strict": false
+    "strict": false,
+    "strictNullChecks": false
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "scripts/summarize.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "exclude": ["node_modules"]
 }

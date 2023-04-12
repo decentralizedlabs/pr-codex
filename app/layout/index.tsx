@@ -1,11 +1,14 @@
-import { AppWrapper, WalletProvider } from "./context"
 import { AppLayout } from "./components"
 import "../../styles/global/styles.css"
 
-import { Inter } from "@next/font/google"
+import { Space_Mono } from "@next/font/google"
 import Script from "next/script"
 
-const font = Inter({ subsets: ["latin"] })
+const font = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap"
+})
 
 export default function RootLayout({
   children
@@ -16,18 +19,7 @@ export default function RootLayout({
     <html lang="en" className={font.className}>
       <head />
       <body>
-        {/* <ThemeProvider
-          attribute="class"
-          storageKey="nightwind-mode"
-          defaultTheme="dark"
-        > */}
-        <WalletProvider>
-          <AppWrapper>
-            <AppLayout>{children}</AppLayout>
-          </AppWrapper>
-        </WalletProvider>
-        {/* </ThemeProvider> */}
-
+        <AppLayout>{children}</AppLayout>
         <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       </body>
     </html>

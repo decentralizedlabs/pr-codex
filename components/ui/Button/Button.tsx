@@ -42,13 +42,13 @@ export default function Button({
 }: Props) {
   const className =
     customClassName ||
-    "nightwind-prevent overflow-hidden text-sm sm:text-base font-bold tracking-wide px-6 rounded-sm h-[40px] min-w-[150px]"
+    "nightwind-prevent overflow-hidden text-sm font-semibold tracking-wide px-6 rounded-lg h-[38px] min-w-[120px]"
   const color = !disabled
     ? customColor || secondary
-      ? "text-blue-600 border-blue-600 border-2 hover:bg-blue-600 hover:text-white"
+      ? "text-yellow-300 border-yellow-300 border-2 hover:bg-yellow-300 hover:text-black"
       : success
-      ? "text-white bg-green-500"
-      : "text-white bg-blue-600 hover:bg-blue-700"
+      ? "text-black bg-green-500"
+      : "text-black bg-yellow-300 hover:bg-yellow-400"
     : "bg-gray-400 dark:!bg-gray-500 cursor-not-allowed"
 
   const rootClassName = `focus:outline-none ${color} ${className}`

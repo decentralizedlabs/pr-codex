@@ -19,10 +19,10 @@ type Props = {
 }
 
 export const accounts: Record<string, string> = {
-  twitter: "https://twitter.com/slice__so"
+  twitter: "https://twitter.com/jj_ranalli",
   // discord: "https://discord.gg/CdyHUzdZks",
   // notion: "https://slicedao.notion.site",
-  // github: "https://github.com/slice-so",
+  github: "https://github.com/decentralizedlabs/pr-codex"
   // blog: "/blog",
   // juicebox: "https://juicebox.money/#/p/slice"
 }
@@ -33,7 +33,7 @@ export default function Social({ wrapperClassName, altAccounts }: Props) {
   const components = {
     twitter: { color: "hover:text-blue-500", element: Twitter },
     discord: { color: "hover:text-indigo-500", element: Discord },
-    github: { color: "hover:text-purple-500", element: Github },
+    github: { color: "hover:text-indigo-600", element: Github },
     notion: { color: "hover:text-gray-500", element: Notion },
     blog: { color: "hover:text-green-500", element: Blog },
     juicebox: { color: "hover:text-yellow-600", element: Juicebox },

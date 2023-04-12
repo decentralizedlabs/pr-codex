@@ -1,6 +1,3 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit"
-import saEvent from "@utils/saEvent"
-
 export type View = {
   name: ViewNames
   cross?: boolean
@@ -21,19 +18,6 @@ export const NETWORK_VIEW = () => {
             <b>{chainId === "5" ? "Goerli Testnet" : "Ethereum Mainnet"}</b>{" "}
             Network
           </p>
-        </div>
-        <div
-          className="flex justify-center"
-          onClick={() => saEvent("connect_wallet_attempt")}
-        >
-          <ConnectButton
-            accountStatus={{
-              smallScreen: "address",
-              largeScreen: "full"
-            }}
-            chainStatus="full"
-            showBalance={false}
-          />
         </div>
       </div>
     </>

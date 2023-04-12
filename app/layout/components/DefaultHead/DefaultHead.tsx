@@ -1,10 +1,10 @@
 import Script from "next/script"
 import { accounts } from "app/layout/components/Social/Social"
 
-export const appName = "Myapp"
-export const appTitle = "Myapp – The best website ever"
+export const appName = "PR-Codex"
+export const appTitle = "PR-Codex"
 export const appDescription =
-  "You have stumbled upon the best website ever. Well done!"
+  "An AI bot that summarizes PR code diffs, directly on Github. Powered by ChatGPT"
 export const appUrl = process.env.NEXT_PUBLIC_APP_URL
 export const twitterAccount = accounts.twitter.split("twitter.com/").pop()
 
@@ -39,6 +39,7 @@ export default function DefaultHead() {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={twitterAccount} />
       <meta name="twitter:creator" content={twitterAccount} />
+      <meta name="twitter:title" content={appTitle} />
 
       <Script
         id="sa_event"

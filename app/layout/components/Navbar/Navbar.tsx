@@ -2,7 +2,6 @@ import Link from "next/link"
 import { Container } from "../"
 import Logo from "@components/icons/Logo"
 import { appName } from "../DefaultHead/DefaultHead"
-import { CustomConnectButton, IsSignedBlock } from "@components/ui"
 import UserIcon from "@components/icons/UserIcon"
 // import Nightwind from "@components/icons/Nightwind"
 
@@ -23,19 +22,16 @@ export default function Navbar() {
             {/* <div className="hidden xs:block xs:mr-2">
               <Nightwind size="h-[24px]" />
             </div> */}
-            <CustomConnectButton signable />
-            <IsSignedBlock>
-              <>
-                <Link href="/profile">
-                  {/* <a
+            <>
+              <Link href="/profile">
+                {/* <a
                         className="cursor-pointer"
                         onMouseDown={() => !showDropdown && setShowDropdown(true)}
                       > */}
-                  <UserIcon />
-                  {/* </a> */}
-                </Link>
-              </>
-            </IsSignedBlock>
+                <UserIcon />
+                {/* </a> */}
+              </Link>
+            </>
           </div>
           {/* {showDropdown && <DropdownMenu setShowDropdown={setShowDropdown} />} */}
         </nav>
