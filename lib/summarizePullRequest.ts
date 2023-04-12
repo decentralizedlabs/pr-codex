@@ -1,28 +1,24 @@
-import { AuthInterface } from "@octokit/auth-app/dist-types/types"
 import { Octokit } from "@octokit/rest"
+<<<<<<< HEAD:lib/handlePullRequestEvent.ts
 import { getFirstComment } from "@utils/github/getFirstComment"
 import { parseDiff } from "@utils/parseDiff"
+=======
+import { getFirstComment } from "../utils/getFirstComment"
+import { parseDiff } from "../utils/parseDiff"
+>>>>>>> dev:lib/summarizePullRequest.ts
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
-import { openai } from "./openAI"
 
-export async function handlePullRequestEvent(
-  payload: any,
-  auth: AuthInterface
-) {
+import { ChatCompletionRequestMessage, OpenAI } from "openai-streams"
+import { yieldStream } from "yield-stream"
+
+export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
   const pr = payload.pull_request
-  const installationId = payload.installation.id
   const { owner, repo, number } = {
     owner: pr.base.repo.owner.login,
     repo: pr.base.repo.name,
     number: pr.number
   }
-
-  // Authenticate as the GitHub App installation
-  const { token } = await auth({ type: "installation", installationId })
-
-  // Create a new Octokit instance with the authenticated token
-  const octokit = new Octokit({ auth: token })
 
   // Get the first comment from the bot
   const firstComment =
@@ -50,7 +46,7 @@ export async function handlePullRequestEvent(
 
   // If there are changes, trigger workflow
   if (codeDiff.length != 0) {
-    const prompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes. Be concise. Make sure to use backticks \` when mentioning files, functions, objects and similar. ${
+    const systemPrompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes. Be concise. Make sure to use backticks \` when mentioning files, functions, objects and similar. ${
       skippedFiles.length != 0
         ? ` After the list, conclude with "\n\n> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
             ","
@@ -58,21 +54,18 @@ export async function handlePullRequestEvent(
         : ""
     }`
 
-    const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: prompt
-        },
-        {
-          role: "user",
-          content: `Here is the code diff:\n${codeDiff}`
-        }
-      ],
-      temperature: 0.7
-    })
-    const summary = completion.data.choices[0].message.content
+    const messages: ChatCompletionRequestMessage[] = [
+      {
+        role: "system",
+        content: systemPrompt
+      },
+      {
+        role: "user",
+        content: `Here is the code diff:\n\n${codeDiff}`
+      }
+    ]
+
+    const summary = await generateChatGpt(messages)
 
     if (firstComment) {
       // Edit pinned bot comment to the PR
@@ -91,5 +84,44 @@ export async function handlePullRequestEvent(
         body: summary
       })
     }
+
+    return summary
   }
+}
+
+const generateChatGpt = async (messages: ChatCompletionRequestMessage[]) => {
+  const DECODER = new TextDecoder()
+  let text = ""
+
+  try {
+    const stream = await OpenAI(
+      "chat",
+      {
+        model: "gpt-3.5-turbo",
+        temperature: 0.7,
+        messages
+      },
+      { apiKey: process.env.OPENAI_API_KEY }
+    )
+
+    for await (const chunk of yieldStream(stream)) {
+      try {
+        const decoded: string = DECODER.decode(chunk)
+
+        if (decoded === undefined)
+          throw new Error(
+            "No choices in response. Decoded response: " +
+              JSON.stringify(decoded)
+          )
+
+        text += decoded
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+
+  return text
 }
