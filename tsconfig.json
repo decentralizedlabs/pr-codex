@@ -35,7 +35,8 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "scripts/summarize.ts"
+    "scripts/summarize.ts",
+    "postcss.config.cjs"
   ],
   "ts-node": {
     "esm": true,

@@ -16,3 +16,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   return res.json()
 }
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  return res.json()
+}

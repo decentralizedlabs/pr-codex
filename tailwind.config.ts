@@ -1,5 +1,10 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import { Config } from "tailwindcss"
+import forms from "@tailwindcss/forms"
+import typography from "@tailwindcss/typography"
+import aspectRatio from "@tailwindcss/aspect-ratio"
+import lineClamp from "@tailwindcss/line-clamp"
+
+const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
     "./pages/**/*.{ts,tsx}",
@@ -47,10 +52,7 @@ module.exports = {
       })
     }
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/line-clamp")
-  ]
+  plugins: [forms, typography, aspectRatio, lineClamp]
 }
+
+export default config
