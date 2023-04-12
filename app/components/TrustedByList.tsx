@@ -4,7 +4,7 @@ import Image from "next/image"
 import { githubColors } from "@utils/githubColors"
 import Star from "@components/icons/Star"
 import Fork from "@components/icons/Fork"
-import { ListIterator } from "@components/ui/ListIterator/ListIterator"
+import { ListIterator } from "@components/ui"
 
 export async function TrustedByList() {
   const installations = await getInstallations()
