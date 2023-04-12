@@ -1,11 +1,6 @@
 import { Octokit } from "@octokit/rest"
-<<<<<<< HEAD:lib/handlePullRequestEvent.ts
-import { getFirstComment } from "@utils/github/getFirstComment"
-import { parseDiff } from "@utils/parseDiff"
-=======
-import { getFirstComment } from "../utils/getFirstComment"
+import { getFirstComment } from "../utils/github/getFirstComment"
 import { parseDiff } from "../utils/parseDiff"
->>>>>>> dev:lib/summarizePullRequest.ts
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 
 import { ChatCompletionRequestMessage, OpenAI } from "openai-streams"
