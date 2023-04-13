@@ -4,6 +4,8 @@ import { summarizePullRequest } from "../lib/summarizePullRequest"
 import dotenv from "dotenv"
 dotenv.config()
 
+// Customize payload in `utils/testPayload`
+
 async function main() {
   const octokit = await handleGithubAuth(testPayload)
 
