@@ -1,10 +1,12 @@
 import { Octokit } from "@octokit/rest"
-import { getFirstComment } from "../utils/getFirstComment"
 import { parseDiff } from "../utils/parseDiff"
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 
 import { ChatCompletionRequestMessage, OpenAI } from "openai-streams"
 import { yieldStream } from "yield-stream"
+
+export const startDescription = "<!-- start pr-codex -->"
+export const endDescription = "<!-- end pr-codex -->"
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -14,11 +16,6 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     repo: pr.base.repo.name,
     number: pr.number
   }
-
-  // Get the first comment from the bot
-  const firstComment =
-    payload.action == "synchronize" &&
-    (await getFirstComment(octokit, owner, repo, number))
 
   // Get the diff content using Octokit and GitHub API
   const compareResponse = await octokit.rest.repos.compareCommits({
@@ -41,7 +38,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
 
   // If there are changes, trigger workflow
   if (codeDiff.length != 0) {
-    const systemPrompt = `You are a Git diff assistant. Given a code diff, you start with a "### Tldr\nThis PR" and provide a simple description in less than 300 chars which sums up the changes in prose. Then continue with a "\n\n### Detailed summary\n" and follow up with a comprehensive list of all changes. Be concise. Make sure to use backticks \` when mentioning files, functions, objects and similar. ${
+    const systemPrompt = `You are a Git diff assistant. Always begin with "This PR". Given a code diff, you provide a simple description in prose, in less than 300 chars, which sums up the changes. Continue with "\n\n### Detailed summary\n" and make a comprehensive list of all changes. Be concise. Always wrap file names, functions, objects and similar in backticks (\`).${
       skippedFiles.length != 0
         ? ` After the list, conclude with "\n\n> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
             ","
@@ -62,23 +59,43 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
 
     const summary = await generateChatGpt(messages)
 
-    if (firstComment) {
-      // Edit pinned bot comment to the PR
-      await octokit.issues.updateComment({
-        owner,
-        repo,
-        comment_id: firstComment.id,
-        body: summary
-      })
-    } else {
-      // Add a comment to the PR
-      await octokit.issues.createComment({
-        owner,
-        repo,
-        issue_number: number,
-        body: summary
-      })
-    }
+    // Check if the PR already has a comment from the bot
+    const hasCodexCommented =
+      payload.action == "synchronize" &&
+      pr.body?.split("\n\n" + startDescription).length > 1
+
+    // if (firstComment) {
+    //   // Edit pinned bot comment to the PR
+    //   await octokit.issues.updateComment({
+    //     owner,
+    //     repo,
+    //     comment_id: firstComment.id,
+    //     body: summary
+    //   })
+    // } else {
+    //   // Add a comment to the PR
+    //   await octokit.issues.createComment({
+    //     owner,
+    //     repo,
+    //     issue_number: number,
+    //     body: summary
+    //   })
+    // }
+
+    const prCodexText = `\n\n${startDescription}\n\n---\n\n## PR-Codex overview\n${summary}\n\n${endDescription}`
+
+    const description = hasCodexCommented
+      ? pr.body.split("\n\n" + startDescription)[0] +
+        prCodexText +
+        pr.body.split(endDescription)[1]
+      : pr.body + prCodexText
+
+    await octokit.issues.update({
+      owner,
+      repo,
+      issue_number: number,
+      body: description
+    })
 
     return summary
   }
