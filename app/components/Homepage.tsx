@@ -2,7 +2,7 @@ import { Button } from "@components/ui"
 import { Footer } from "app/layout/components"
 import { TrustedBy } from "./TrustedBy"
 
-export async function Homepage() {
+export function Homepage() {
   return (
     <div className="overflow-hidden">
       <div className="relative isolate pt-14">
@@ -65,7 +65,6 @@ export async function Homepage() {
             </video>
           </div>
         </div>
-        {/* @ts-expect-error Async Server Component */}
         <TrustedBy />
         <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
           <svg

@@ -20,31 +20,33 @@ export async function TrustedByList() {
   )
 
   {
-    /* <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                Trusted by
-              </h2>
-              <div className="flex flex-wrap justify-between mt-16">
-                {topUsersRepos.map((repo) => (
-                  <a
-                    href={repo.owner.html_url}
-                    key={repo.id}
-                    className="flex flex-col items-center justify-center w-1/2 mb-8 sm:w-1/3 md:w-1/4"
-                  >
-                    <Image
-                      src={repo.owner.avatar_url}
-                      alt="Github"
-                      width={100}
-                      height={100}
-                      className="rounded-full"
-                    />
-                    <p className="mt-2 text-sm text-gray-300">
-                      {repo.owner.login}
-                    </p>
-                  </a>
-                ))}
-              </div>
-            </div> */
+    /*
+    <div className="max-w-2xl mx-auto text-center">
+      <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+        Trusted by
+      </h2>
+      <div className="flex flex-wrap justify-between mt-16">
+        {topUsersRepos.map((repo) => (
+          <a
+            href={repo.owner.html_url}
+            key={repo.id}
+            className="flex flex-col items-center justify-center w-1/2 mb-8 sm:w-1/3 md:w-1/4"
+          >
+            <Image
+              src={repo.owner.avatar_url}
+              alt="Github"
+              width={100}
+              height={100}
+              className="rounded-full"
+            />
+            <p className="mt-2 text-sm text-gray-300">
+              {repo.owner.login}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+    */
   }
 
   return (
