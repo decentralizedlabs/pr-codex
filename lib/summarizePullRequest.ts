@@ -5,8 +5,8 @@ import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 import { ChatCompletionRequestMessage, OpenAI } from "openai-streams"
 import { yieldStream } from "yield-stream"
 
-const startDescription = "<!-- start pr-codex -->"
-const endDescription = "<!-- end pr-codex -->"
+export const startDescription = "<!-- start pr-codex -->"
+export const endDescription = "<!-- end pr-codex -->"
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -38,7 +38,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
 
   // If there are changes, trigger workflow
   if (codeDiff.length != 0) {
-    const systemPrompt = `You are a Git diff assistant. Always begin with "\n\n${startDescription}\n\n---\n\n## PR-Codex overview\nThis PR" and conclude with "${endDescription}". Given a code diff, you provide a simple description in prose, in less than 300 chars, which sums up the changes. Continue with "\n\n### Detailed summary\n" and make a comprehensive list of all changes. Be concise. Make sure to use backticks \` when mentioning files, functions, objects and similar.${
+    const systemPrompt = `You are a Git diff assistant. Always begin with "This PR". Given a code diff, you provide a simple description in prose, in less than 300 chars, which sums up the changes. Continue with "\n\n### Detailed summary\n" and make a comprehensive list of all changes. Be concise. Always wrap file names, functions, objects and similar in backticks (\`).${
       skippedFiles.length != 0
         ? ` After the list, conclude with "\n\n> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
             ","
@@ -62,7 +62,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     // Check if the PR already has a comment from the bot
     const hasCodexCommented =
       payload.action == "synchronize" &&
-      pr.body?.split(startDescription).length > 1
+      pr.body?.split("\n\n" + startDescription).length > 1
 
     // if (firstComment) {
     //   // Edit pinned bot comment to the PR
@@ -82,11 +82,13 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     //   })
     // }
 
+    const prCodexText = `\n\n${startDescription}\n\n---\n\n## PR-Codex overview\n${summary}\n\n${endDescription}`
+
     const description = hasCodexCommented
-      ? pr.body.split(startDescription)[0] +
-        summary +
+      ? pr.body.split("\n\n" + startDescription)[0] +
+        prCodexText +
         pr.body.split(endDescription)[1]
-      : pr.body + summary
+      : pr.body + prCodexText
 
     await octokit.issues.update({
       owner,
