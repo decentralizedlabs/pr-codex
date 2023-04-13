@@ -1,4 +1,4 @@
-import { testPayload } from "@utils/github/testPayload"
+import { testPayload } from "../utils/github/testPayload"
 import { handleGithubAuth } from "../lib/handleGithubAuth"
 import { summarizePullRequest } from "../lib/summarizePullRequest"
 import dotenv from "dotenv"
