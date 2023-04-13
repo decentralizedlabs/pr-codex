@@ -3,6 +3,7 @@ export const testPayload = {
   action: "synchronize",
   pull_request: {
     number: 4,
+    body: "<!-- start -->\n\nthis is a test",
     base: {
       repo: { owner: { login: "decentralizedlabs" }, name: "pr-codex" },
       sha: "99dfdd96142d171546b59504fbba84cffe23ebd2"
