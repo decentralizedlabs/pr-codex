@@ -10,7 +10,7 @@ const Info = ({ ...props }) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-full h-full"
+      className="h-full w-full"
       {...props}
     >
       <circle cx="12" cy="12" r="10"></circle>

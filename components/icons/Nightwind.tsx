@@ -1,6 +1,7 @@
 "use client"
 
 import { useTheme } from "next-themes"
+
 // import nightwind from "nightwind/helper"
 
 const Nightwind = ({ ...props }) => {
@@ -24,7 +25,7 @@ const Nightwind = ({ ...props }) => {
       onClick={props.onClick || toggle}
       className={`${
         props.size || "h-10"
-      } w-auto cursor-pointer group mx-auto z-10`}
+      } group z-10 mx-auto w-auto cursor-pointer`}
     >
       <circle
         cx="70"

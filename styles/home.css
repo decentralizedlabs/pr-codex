@@ -8,7 +8,7 @@
 }
 
 .clickable {
-  @apply font-medium cursor-pointer;
+  @apply cursor-pointer font-medium;
 }
 
 .clickable.active {

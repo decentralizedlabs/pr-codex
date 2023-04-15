@@ -1,4 +1,4 @@
-import { Container } from "app/layout/components"
+import { Container } from "app/layout/_components"
 
 export default function ProfilePage() {
   return (

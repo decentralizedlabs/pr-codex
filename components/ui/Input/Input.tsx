@@ -81,10 +81,10 @@ export default function Input({
           </div>
         </>
       )}
-      <div className="flex flex-row-reverse mb-3">
+      <div className="mb-3 flex flex-row-reverse">
         {onClick && (
           <div
-            className={`relative text-sm font-medium group flex items-center justify-center px-5 text-white nightwind-prevent ${
+            className={`nightwind-prevent group relative flex items-center justify-center px-5 text-sm font-medium text-white ${
               error
                 ? "cursor-pointer bg-red-500"
                 : `bg-blue-600 ${
@@ -101,14 +101,14 @@ export default function Input({
               </span>
             )}
             <div
-              className={`w-[1.2rem] h-[1.2rem] text-white nightwind-prevent transition-transform duration-150 group-hover:translate-x-1 ${
+              className={`nightwind-prevent h-[1.2rem] w-[1.2rem] text-white transition-transform duration-150 group-hover:translate-x-1 ${
                 loading ? "-z-10" : ""
               }`}
             >
               <Arrow />
             </div>
             {loading && (
-              <div className="absolute flex items-center justify-center w-full h-full">
+              <div className="absolute flex h-full w-full items-center justify-center">
                 <Spinner color="text-white nightwind-prevent" />
               </div>
             )}
@@ -129,13 +129,13 @@ export default function Input({
 
         {prefix && (
           <div
-            className={`flex items-center rounded-l-sm justify-center px-5 text-gray-600 bg-gray-200 ${
+            className={`flex items-center justify-center rounded-l-sm bg-gray-200 px-5 text-gray-600 ${
               error ? "shadow-error" : !disabled && !loading ? "text-black" : ""
             } ${
               prefixAction && !disabled && !loading
                 ? "cursor-pointer hover:bg-gray-100"
                 : ""
-            } ${disabled || loading ? "text-gray-400 bg-gray-100 " : ""}`}
+            } ${disabled || loading ? "bg-gray-100 text-gray-400 " : ""}`}
             onClick={
               prefixAction && !disabled && !loading
                 ? () => prefixAction()

@@ -1,9 +1,8 @@
 import { Octokit } from "@octokit/rest"
-import { parseDiff } from "../utils/parseDiff"
-import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
-
 import { ChatCompletionRequestMessage, OpenAI } from "openai-streams"
 import { yieldStream } from "yield-stream"
+import { parseDiff } from "../utils/parseDiff"
+import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 
 export const startDescription = "<!-- start pr-codex -->"
 export const endDescription = "<!-- end pr-codex -->"

@@ -16,7 +16,7 @@ export default function ListIterator({
   return (
     <>
       <div className={wrapperClassname}>{children.slice(0, items)}</div>
-      <p className="mt-12 text-sm font-bold text-center text-gray-300/60">
+      <p className="mt-12 text-center text-sm font-bold text-gray-300/60">
         <span
           className="cursor-pointer hover:text-gray-300/100"
           onClick={() => setItems((items) => (items += initItems))}

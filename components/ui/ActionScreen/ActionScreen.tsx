@@ -30,16 +30,16 @@ export default function ActionScreen({
   onClickSecondary = () => null
 }: Props) {
   return (
-    <main className="w-full max-w-screen-sm mx-auto">
+    <main className="mx-auto w-full max-w-screen-sm">
       <div className="flex flex-col items-center text-center">
         {title && <h1>{title}</h1>}
         {text && typeof text === "string" ? (
-          <h3 className="font-semibold mb-7">{text}</h3>
+          <h3 className="mb-7 font-semibold">{text}</h3>
         ) : (
           text
         )}
         {helpText && typeof helpText === "string" ? (
-          <p className="opacity-70 mb-7">{helpText}</p>
+          <p className="mb-7 opacity-70">{helpText}</p>
         ) : (
           helpText
         )}
@@ -58,7 +58,7 @@ export default function ActionScreen({
           )}
           {buttonLabelSecondary && (
             <p className="pt-8">
-              <a className="mt-8 highlight" onClick={onClickSecondary}>
+              <a className="highlight mt-8" onClick={onClickSecondary}>
                 {buttonLabelSecondary}
               </a>
             </p>

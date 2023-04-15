@@ -1,8 +1,7 @@
-import { Config } from "tailwindcss"
+import aspectRatio from "@tailwindcss/aspect-ratio"
 import forms from "@tailwindcss/forms"
 import typography from "@tailwindcss/typography"
-import aspectRatio from "@tailwindcss/aspect-ratio"
-import lineClamp from "@tailwindcss/line-clamp"
+import { Config } from "tailwindcss"
 
 const config: Config = {
   content: [
@@ -52,7 +51,7 @@ const config: Config = {
       })
     }
   },
-  plugins: [forms, typography, aspectRatio, lineClamp]
+  plugins: [forms, typography, aspectRatio]
 }
 
 export default config

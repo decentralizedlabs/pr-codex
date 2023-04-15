@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import QuestionMark from "@components/icons/QuestionMark"
+import { useState } from "react"
 
 type Props = {
   text: string | JSX.Element
@@ -16,9 +16,9 @@ export default function Question({ text, position }: Props) {
       <div
         className={`${
           !show ? "hidden " : ""
-        }prose-sm text-left absolute p-5 w-[22rem] z-10 xs:w-96 bg-white shadow-xl ${
+        }prose-sm xs:w-96 absolute z-10 w-[22rem] bg-white p-5 text-left shadow-xl ${
           position || "bottom-0 left-0"
-        } mb-9 rounded-sm overflow-hidden border border-blue-600 border-opacity-50`}
+        } mb-9 overflow-hidden rounded-sm border border-blue-600 border-opacity-50`}
       >
         {text}
       </div>

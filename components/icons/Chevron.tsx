@@ -8,7 +8,7 @@ const Chevron = ({ ...props }) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="feather feather-chevron-left w-full h-full"
+      className="feather feather-chevron-left h-full w-full"
       {...props}
     >
       <polyline points="15 18 9 12 15 6"></polyline>

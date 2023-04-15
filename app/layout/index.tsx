@@ -1,6 +1,6 @@
-import { AppLayout } from "./components"
+import { AppLayout } from "./_components"
+import { baseMetadata } from "./_components/Metadata"
 import "../../styles/global/styles.css"
-
 import { Space_Mono } from "@next/font/google"
 import Script from "next/script"
 
@@ -17,7 +17,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={font.className}>
-      <head />
       <body>
         <AppLayout>{children}</AppLayout>
         <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
@@ -25,3 +24,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+export const metadata = baseMetadata
