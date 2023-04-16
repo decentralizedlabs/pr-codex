@@ -1,6 +1,6 @@
 import { endDescription, startDescription } from "@lib/summarizePullRequest"
 
-export const testPayload = {
+export const testPayloadSyncPr = {
   installation: { id: 35293807 },
   action: "synchronize",
   pull_request: {
