@@ -1,8 +1,8 @@
-export const fetchCache = "force-no-store"
-
-import { NextRequest, NextResponse } from "next/server"
-import { summarizePullRequest } from "@lib/summarizePullRequest"
 import { handleGithubAuth } from "@lib/handleGithubAuth"
+import { summarizePullRequest } from "@lib/summarizePullRequest"
+import { NextRequest, NextResponse } from "next/server"
+
+export const fetchCache = "force-no-store"
 
 export async function POST(req: NextRequest) {
   const payload = await req.json()

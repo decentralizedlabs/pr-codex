@@ -10,7 +10,7 @@ const Delete = ({ ...props }) => {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="text-black opacity-50 cursor-pointer hover:text-red-500 hover:opacity-100"
+      className="cursor-pointer text-black opacity-50 hover:text-red-500 hover:opacity-100"
       {...props}
     >
       <circle cx="12" cy="12" r="10"></circle>

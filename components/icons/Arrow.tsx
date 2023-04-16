@@ -10,7 +10,7 @@ const Arrow = ({ ...props }) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-full h-full"
+      className="h-full w-full"
       {...props}
     >
       <line x1="5" y1="12" x2="19" y2="12"></line>

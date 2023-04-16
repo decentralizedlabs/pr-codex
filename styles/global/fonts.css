@@ -12,7 +12,7 @@ h3 {
 }
 
 a {
-  @apply font-medium cursor-pointer hover:text-yellow-300;
+  @apply cursor-pointer font-medium hover:text-yellow-300;
   text-decoration: none;
 }
 

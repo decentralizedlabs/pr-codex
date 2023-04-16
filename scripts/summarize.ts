@@ -1,7 +1,8 @@
-import { testPayload } from "../utils/github/testPayload"
+import dotenv from "dotenv"
 import { handleGithubAuth } from "../lib/handleGithubAuth"
 import { summarizePullRequest } from "../lib/summarizePullRequest"
-import dotenv from "dotenv"
+import { testPayload } from "../utils/github/testPayload"
+
 dotenv.config()
 
 // Customize payload in `utils/testPayload`

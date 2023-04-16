@@ -79,7 +79,7 @@ export default function Button({
           disabled={disabled}
           onClick={!disabled && !loading && !success ? onClick : null}
         >
-          <div className="flex items-center justify-center w-full">
+          <div className="flex w-full items-center justify-center">
             {success ? (
               <Check />
             ) : loading ? (

@@ -9,7 +9,7 @@ const NoteText = ({ text, error }: Props) => {
   return (
     <div className={`text-sm ${error ? "text-red-500" : "text-yellow-600"}`}>
       <p>
-        <span className="inline-block w-[18px] h-[18px] mr-2 -mb-1">
+        <span className="-mb-1 mr-2 inline-block h-[18px] w-[18px]">
           <Info />
         </span>
         {text}

@@ -1,8 +1,8 @@
 "use client"
 
 import { Dispatch, SetStateAction } from "react"
-import Question from "../Question"
 import MySwitch from "../MySwitch"
+import Question from "../Question"
 
 type Props = {
   label: string
@@ -21,7 +21,7 @@ export default function InputSwitch({
 }: Props) {
   return (
     <div className="relative flex items-center justify-end py-2 ">
-      <div className="flex items-center mr-3">
+      <div className="mr-3 flex items-center">
         <p className="pr-1">{label}</p>
         {questionText && <Question text={questionText} position={position} />}
       </div>
