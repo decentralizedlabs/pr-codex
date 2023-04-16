@@ -12,7 +12,7 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
   // Get relevant PR information
   const { repository, issue, sender, comment } = payload
 
-  const question = comment.body.split("/codex-ask")[1].trim()
+  const question = comment.body.split("/ask-codex")[1].trim()
 
   if (question) {
     const { owner, repo, issue_number } = {

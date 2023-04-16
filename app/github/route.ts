@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
       await summarizePullRequest(payload, octokit)
     } else if (payload.action == "created") {
-      if (payload.comment.body.includes("/codex-ask")) {
+      if (payload.comment.body.includes("/ask-codex")) {
         // If a comment is created, reply to it
         const octokit = await handleGithubAuth(payload)
 
