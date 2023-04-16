@@ -4,7 +4,7 @@ import { yieldStream } from "yield-stream"
 import { parseDiff } from "../utils/parseDiff"
 import { joinStringsUntilMaxLength } from "./joinStringsUntilMaxLength"
 
-export const startDescription = "<!-- start pr-codex -->"
+export const startDescription = "\n\n<!-- start pr-codex -->"
 export const endDescription = "<!-- end pr-codex -->"
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
@@ -61,7 +61,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     // Check if the PR already has a comment from the bot
     const hasCodexCommented =
       payload.action == "synchronize" &&
-      pr.body?.split("\n\n" + startDescription).length > 1
+      pr.body?.split(startDescription).length > 1
 
     // if (firstComment) {
     //   // Edit pinned bot comment to the PR
@@ -81,13 +81,17 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     //   })
     // }
 
-    const prCodexText = `\n\n${startDescription}\n\n---\n\n## PR-Codex overview\n${summary}\n\n${endDescription}`
+    const prCodexText = `${startDescription}\n\n${
+      (hasCodexCommented ? pr.body.split(startDescription)[0].trim() : pr.body)
+        ? "---\n\n"
+        : ""
+    }## PR-Codex overview\n${summary}\n\n${endDescription}`
 
     const description = hasCodexCommented
-      ? pr.body.split("\n\n" + startDescription)[0] +
+      ? pr.body.split(startDescription)[0] +
         prCodexText +
         pr.body.split(endDescription)[1]
-      : pr.body + prCodexText
+      : (pr.body ?? "") + prCodexText
 
     await octokit.issues.update({
       owner,
