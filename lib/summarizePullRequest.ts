@@ -11,17 +11,17 @@ const systemPrompt =
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
   const pr = payload.pull_request
-  const { owner, repo, number } = {
+  const { owner, repo, pull_number } = {
     owner: pr.base.repo.owner.login,
     repo: pr.base.repo.name,
-    number: pr.number
+    pull_number: pr.number
   }
 
   // Get the diff content using Octokit and GitHub API
   const { codeDiff, skippedFiles } = await getCodeDiff(
     owner,
     repo,
-    number,
+    pull_number,
     octokit
   )
 
@@ -66,7 +66,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     await octokit.issues.update({
       owner,
       repo,
-      issue_number: number,
+      issue_number: pull_number,
       body: description
     })
 
