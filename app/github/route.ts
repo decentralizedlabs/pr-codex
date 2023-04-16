@@ -1,4 +1,5 @@
 import { handleGithubAuth } from "@lib/handleGithubAuth"
+import { replyIssueComment } from "@lib/replyIssueComment"
 import { summarizePullRequest } from "@lib/summarizePullRequest"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -9,9 +10,17 @@ export async function POST(req: NextRequest) {
 
   try {
     if (payload.action == "opened" || payload.action == "synchronize") {
+      // If a PR is opened or updated, summarize it
       const octokit = await handleGithubAuth(payload)
 
       await summarizePullRequest(payload, octokit)
+    } else if (payload.action == "created") {
+      if (payload.comment.body.includes("/codex-ask")) {
+        // If a comment is created, reply to it
+        const octokit = await handleGithubAuth(payload)
+
+        await replyIssueComment(payload, octokit)
+      }
     }
 
     return NextResponse.json("ok")
