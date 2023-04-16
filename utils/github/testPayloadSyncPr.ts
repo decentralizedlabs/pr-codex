@@ -6,9 +6,9 @@ export const testPayloadSyncPr = {
   pull_request: {
     diff_url: "https://github.com/decentralizedlabs/pr-codex/pull/4.diff",
     number: 4,
-    // body: null,
+    body: null,
     // body: "\n\n<!-- start pr-codex -->\n\n## PR-Codex overview\nThis PR adds a new feature to the project: a GitHub app that explains and summarizes PR code diffs. It includes a new `github/route.ts` file and updates several existing files, including `README.md`, `Homepage.tsx`, `DefaultHead.tsx`, `AppLayout.tsx`, `Footer.tsx`, and `Navbar.tsx`.\n\n> The following files were skipped due to too many changes: `package-lock.json`.\n\n<!-- end pr-codex -->",
-    body: "<!-- start -->\n\nthis is a test",
+    // body: "<!-- start -->\n\nthis is a test",
     // body:
     //   "<!-- start -->\n\nthis is a test" +
     //   startDescription +

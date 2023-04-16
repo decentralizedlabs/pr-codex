@@ -29,11 +29,11 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
       const messages: ChatCompletionRequestMessage[] = [
         {
           role: "system",
-          content: systemPrompt
+          content: `${systemPrompt}\n\nHere is the code diff:\n\n${codeDiff}`
         },
         {
           role: "user",
-          content: `${question}\n\nHere is the code diff:\n\n${codeDiff}`
+          content: `${question}`
         }
       ]
 

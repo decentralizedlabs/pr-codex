@@ -6,7 +6,7 @@ export const testPayloadComment = {
   },
 
   comment: {
-    body: "/ask-codex Describe the changes in the homepage UI"
+    body: "/ask-codex what changes have been done in the homepage?"
   },
   sender: {
     login: "jjranalli"

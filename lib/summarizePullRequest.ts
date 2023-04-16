@@ -6,7 +6,7 @@ import { getCodeDiff } from "../utils/getCodeDiff"
 export const startDescription = "\n\n<!-- start pr-codex -->"
 export const endDescription = "<!-- end pr-codex -->"
 const systemPrompt =
-  'You are a Git diff assistant. Always begin with "This PR". Given a code diff, you provide a simple description in prose, in less than 300 chars, which sums up the changes. Continue with "\n\n### Detailed summary\n" and make a comprehensive list of all changes, excluding any eventual skipped files. Be concise. Always wrap file names, functions, objects and similar in backticks (`).'
+  "You are a Git diff assistant. Given a code diff, you provide a clear and concise description of its content. Always wrap file names, functions, objects and similar in backticks (`)."
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -18,7 +18,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
   }
 
   // Get the diff content using Octokit and GitHub API
-  const { codeDiff, skippedFiles } = await getCodeDiff(
+  const { codeDiff, skippedFiles, maxLengthExceeded } = await getCodeDiff(
     owner,
     repo,
     pull_number,
@@ -30,11 +30,12 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
     const messages: ChatCompletionRequestMessage[] = [
       {
         role: "system",
-        content: systemPrompt
+        content: `${systemPrompt}\n\nHere is the code diff:\n\n${codeDiff}`
       },
       {
         role: "user",
-        content: `Here is the code diff:\n\n${codeDiff}`
+        content:
+          'Starting with "This PR", clearly explain the focus of this PR in prose, in less than 300 characters. Then follow up with "\n\n### Detailed summary\n" and make a comprehensive list of all changes.'
       }
     ]
 
@@ -54,6 +55,10 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
         ? `\n\n> The following files were skipped due to too many changes: ${skippedFiles.join(
             ", "
           )}`
+        : ""
+    }${
+      maxLengthExceeded
+        ? "\n\n> The code diff exceeds the max number of characters, so this overview may be incomplete."
         : ""
     }\n\n${endDescription}`
 
