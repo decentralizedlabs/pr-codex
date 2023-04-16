@@ -1,19 +1,19 @@
 import dotenv from "dotenv"
 import { handleGithubAuth } from "../lib/handleGithubAuth"
 import { summarizePullRequest } from "../lib/summarizePullRequest"
-import { testPayload } from "../utils/github/testPayload"
+import { testPayloadSyncPr } from "../utils/github/testPayloadSyncPr"
 
 dotenv.config()
 
-// Customize payload in `utils/testPayload`
+// Customize payload in `utils/testPayloadSyncPr`
 
 async function main() {
-  const octokit = await handleGithubAuth(testPayload)
-
   try {
+    const octokit = await handleGithubAuth(testPayloadSyncPr)
+
     console.log("Generating summary...")
 
-    const summary = await summarizePullRequest(testPayload, octokit)
+    const summary = await summarizePullRequest(testPayloadSyncPr, octokit)
 
     console.log(
       "PR-Codex wrote:\n\n",
