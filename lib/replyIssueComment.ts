@@ -18,7 +18,7 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
     const { owner, repo, number, diff_hunk } = {
       owner: repository.owner.login,
       repo: repository.name,
-      number: issue.number ?? pull_request.number,
+      number: issue?.number ?? pull_request.number,
       diff_hunk: comment?.diff_hunk
     }
 
