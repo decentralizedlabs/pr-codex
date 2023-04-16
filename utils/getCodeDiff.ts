@@ -3,7 +3,7 @@ import { joinStringsUntilMaxLength } from "../lib/joinStringsUntilMaxLength"
 import { parseDiff } from "./parseDiff"
 
 const maxChanges = 1000
-const maxCodeDiff = 10000
+const maxCodeDiff = 11500
 
 export const getCodeDiff = async (
   owner: string,
@@ -26,7 +26,11 @@ export const getCodeDiff = async (
   // If the number of changes in a file is greater than `maxChanges` changes, the file will be skipped.
   // The codeDiff is the joined string of parsed files, up to a max length of `maxCodeDiff`.
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
-  const codeDiff = joinStringsUntilMaxLength(parsedFiles, maxCodeDiff)
 
-  return { codeDiff, skippedFiles }
+  const { codeDiff, maxLengthExceeded } = joinStringsUntilMaxLength(
+    parsedFiles,
+    maxCodeDiff
+  )
+
+  return { codeDiff, skippedFiles, maxLengthExceeded }
 }
