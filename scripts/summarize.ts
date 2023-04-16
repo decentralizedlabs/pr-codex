@@ -8,9 +8,9 @@ dotenv.config()
 // Customize payload in `utils/testPayloadSyncPr`
 
 async function main() {
-  const octokit = await handleGithubAuth(testPayloadSyncPr)
-
   try {
+    const octokit = await handleGithubAuth(testPayloadSyncPr)
+
     console.log("Generating summary...")
 
     const summary = await summarizePullRequest(testPayloadSyncPr, octokit)
