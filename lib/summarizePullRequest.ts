@@ -58,9 +58,9 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
         : ""
     }${
       maxLengthExceeded
-        ? "\n\n> The code diff exceeds the max number of characters, so this overview may be incomplete."
+        ? "\n\n> The code diff exceeds the max number of characters, so this overview may be incomplete. Keep PRs small to avoid this issue."
         : ""
-    }\n\n${endDescription}`
+    }\n\n✨ Ask PR-Codex anything about this PR by commenting below with \`/ask-codex {your question}\`\n\n${endDescription}`
 
     const description = hasCodexCommented
       ? pr.body.split(startDescription)[0] +
