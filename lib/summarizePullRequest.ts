@@ -36,7 +36,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
   const codeDiff = joinStringsUntilMaxLength(parsedFiles, 10000)
 
   // If there are changes, trigger workflow
-  if (codeDiff.length != 0) {
+  if (codeDiff?.length != 0) {
     const systemPrompt = `You are a Git diff assistant. Always begin with "This PR". Given a code diff, you provide a simple description in prose, in less than 300 chars, which sums up the changes. Continue with "\n\n### Detailed summary\n" and make a comprehensive list of all changes, excluding any eventual skipped files. Be concise. Always wrap file names, functions, objects and similar in backticks (\`).${
       skippedFiles.length != 0
         ? ` After the list, conclude with "\n\n> " and mention that the following files were skipped due to too many changes: ${skippedFiles.join(
@@ -98,6 +98,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
 
     return summary
   }
+  throw new Error("No changes in PR")
 }
 
 const generateChatGpt = async (messages: ChatCompletionRequestMessage[]) => {
