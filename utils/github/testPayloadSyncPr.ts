@@ -1,4 +1,4 @@
-import { endDescription, startDescription } from "@lib/summarizePullRequest"
+import { startDescription, endDescription } from "../../utils/constants"
 
 export const testPayloadSyncPr = {
   installation: { id: 35293807 },

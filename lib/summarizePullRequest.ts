@@ -1,10 +1,13 @@
 import { Octokit } from "@octokit/rest"
 import { ChatCompletionRequestMessage } from "openai-streams"
+import {
+  codexCommand,
+  endDescription,
+  startDescription
+} from "../utils/constants"
 import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
-export const startDescription = "\n\n<!-- start pr-codex -->"
-export const endDescription = "<!-- end pr-codex -->"
 const systemPrompt =
   "You are a Git diff assistant. Given a code diff, you provide a clear and concise description of its content. Always wrap file names, functions, objects and similar in backticks (`)."
 
@@ -58,9 +61,9 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
         : ""
     }${
       maxLengthExceeded
-        ? "\n\n> The code diff exceeds the max number of characters, so this overview may be incomplete. Keep PRs small to avoid this issue."
+        ? "\n\n> The code diff in this PR exceeds the max number of characters, so this overview may be incomplete."
         : ""
-    }\n\n✨ Ask PR-Codex anything about this PR by commenting below with \`/ask-codex {your question}\`\n\n${endDescription}`
+    }\n\n✨ Ask PR-Codex anything about this PR by commenting with \`${codexCommand}{your question}\`\n\n${endDescription}`
 
     const description = hasCodexCommented
       ? pr.body.split(startDescription)[0] +
