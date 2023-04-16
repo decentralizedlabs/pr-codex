@@ -22,9 +22,10 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
       diff_hunk: comment?.diff_hunk
     }
 
-    // Get the diff content using Octokit and GitHub API
-    const { codeDiff } =
-      diff_hunk ?? (await getCodeDiff(owner, repo, number, octokit))
+    // Get the diff content
+    const { codeDiff } = diff_hunk
+      ? { codeDiff: diff_hunk }
+      : await getCodeDiff(owner, repo, number, octokit)
 
     // If there are changes, trigger workflow
     if (codeDiff?.length != 0) {
