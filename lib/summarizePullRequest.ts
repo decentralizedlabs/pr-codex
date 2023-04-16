@@ -9,7 +9,7 @@ import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
 const systemPrompt =
-  "You are a Git diff assistant. Given a code diff, you provide a clear and concise description of its content. Always wrap file names, functions, objects and similar in backticks (`)."
+  'You are a Git diff assistant. Given a code diff, you provide clear and concise information on its content. Always wrap file names, functions, objects and similar in backticks (`). Start your reply with "This PR"'
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -38,7 +38,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
       {
         role: "user",
         content:
-          'Starting with "This PR", clearly explain the focus of this PR in prose, in less than 300 characters. Then follow up with "\n\n### Detailed summary\n" and make a comprehensive list of all changes.'
+          'Clearly explain the focus of this PR in less than 300 characters. Then continue with the text "\n\n### Detailed summary\n" and make a list of all notable changes.'
       }
     ]
 
@@ -63,7 +63,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
       maxLengthExceeded
         ? "\n\n> The code diff in this PR exceeds the max number of characters, so this overview may be incomplete."
         : ""
-    }\n\n✨ Ask PR-Codex anything about this PR by commenting with \`${codexCommand}{your question}\`\n\n${endDescription}`
+    }\n\n> ✨ Ask PR-Codex anything about this PR by commenting with \`${codexCommand}{your question}\`\n\n${endDescription}`
 
     const description = hasCodexCommented
       ? pr.body.split(startDescription)[0] +
