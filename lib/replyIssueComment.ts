@@ -6,7 +6,7 @@ import { getCodeDiff } from "../utils/getCodeDiff"
 export const startDescription = "\n\n<!-- start pr-codex -->"
 export const endDescription = "<!-- end pr-codex -->"
 const systemPrompt =
-  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be concise. Always wrap file names, functions, objects and similar in backticks (`)."
+  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
 
 export async function replyIssueComment(payload: any, octokit: Octokit) {
   // Get relevant PR information
