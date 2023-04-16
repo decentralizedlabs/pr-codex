@@ -1,10 +1,9 @@
 import { Octokit } from "@octokit/rest"
 import { ChatCompletionRequestMessage } from "openai-streams"
+import { codexCommand } from "../utils/constants"
 import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
-export const startDescription = "\n\n<!-- start pr-codex -->"
-export const endDescription = "<!-- end pr-codex -->"
 const systemPrompt =
   "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
 
@@ -12,7 +11,7 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
   // Get relevant PR information
   const { repository, issue, sender, comment, pull_request } = payload
 
-  const question = comment.body.split("/ask-codex")[1].trim()
+  const question = comment.body.split(codexCommand)[1].trim()
 
   if (question) {
     const { owner, repo, number, diff_hunk } = {

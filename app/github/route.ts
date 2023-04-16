@@ -1,6 +1,7 @@
 import { handleGithubAuth } from "@lib/handleGithubAuth"
 import { replyIssueComment } from "@lib/replyIssueComment"
 import { summarizePullRequest } from "@lib/summarizePullRequest"
+import { codexCommand } from "@utils/constants"
 import { NextRequest, NextResponse } from "next/server"
 
 export const fetchCache = "force-no-store"
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
 
       await summarizePullRequest(payload, octokit)
     } else if (payload.action == "created") {
-      if (payload.comment.body.includes("/ask-codex")) {
+      if (payload.comment.body.includes(codexCommand)) {
         // If a comment is created, reply to it
         const octokit = await handleGithubAuth(payload)
 

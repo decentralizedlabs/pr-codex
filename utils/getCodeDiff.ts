@@ -1,9 +1,7 @@
 import { Octokit } from "@octokit/rest"
 import { joinStringsUntilMaxLength } from "../lib/joinStringsUntilMaxLength"
+import { maxChanges, maxCodeDiff } from "./constants"
 import { parseDiff } from "./parseDiff"
-
-const maxChanges = 1000
-const maxCodeDiff = 11500
 
 export const getCodeDiff = async (
   owner: string,

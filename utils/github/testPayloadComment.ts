@@ -1,3 +1,5 @@
+import { codexCommand } from "../../utils/constants"
+
 export const testPayloadComment = {
   installation: { id: 35293807 },
   action: "created",
@@ -6,7 +8,7 @@ export const testPayloadComment = {
   },
 
   comment: {
-    body: "/ask-codex what changes have been done in the homepage?"
+    body: `${codexCommand}what changes have been done in the homepage?`
   },
   sender: {
     login: "jjranalli"
