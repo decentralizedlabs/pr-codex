@@ -14,7 +14,7 @@ export function parseDiff(diff: string, maxChanges: number): FileChange {
     if (changes <= maxChanges) {
       return file
     }
-    skippedFiles.push(filepath.slice(2))
+    skippedFiles.push(`\`${filepath.slice(2)}\``)
   })
   return { parsedFiles, skippedFiles }
 }
