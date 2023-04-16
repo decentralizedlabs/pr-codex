@@ -23,8 +23,8 @@ export const getCodeDiff = async (
   const diffContent = String(compareResponse.data)
 
   // Parses the diff content and returns the parsed files.
-  // If the number of changes in a file is greater than 1k changes, the file will be skipped.
-  // The codeDiff is the joined string of parsed files, up to a max length of 10k.
+  // If the number of changes in a file is greater than `maxChanges` changes, the file will be skipped.
+  // The codeDiff is the joined string of parsed files, up to a max length of `maxCodeDiff`.
   const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
   const codeDiff = joinStringsUntilMaxLength(parsedFiles, maxCodeDiff)
 
