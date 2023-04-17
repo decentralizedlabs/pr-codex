@@ -12,10 +12,11 @@ export function parseDiff(diff: string, maxChanges: number): FileChange {
     // Don't consider diff in deleted files
     if (lines[1].startsWith("deleted")) return `deleted ${filepath}`
 
-    const mainContent = lines.slice(6).map((line) => {
+    const mainContent = lines.slice(6).flatMap((line) => {
       if (line.startsWith("+") || line.startsWith("-")) {
-        const trimContent = line.slice(1).trim()
-        return line[0] + trimContent
+        const trimmedContent = line.slice(1).trim()
+        if (!trimmedContent) return []
+        return line[0] + trimmedContent
       } else return line.trim()
     })
     const changes = mainContent.filter(
