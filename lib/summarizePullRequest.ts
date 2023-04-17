@@ -9,7 +9,7 @@ import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
 const systemPrompt =
-  'You are a Git diff assistant. Given a code diff, you provide clear and concise information on its content. Always wrap file names, functions, objects and similar in backticks (`). Start your reply with "This PR"'
+  'You are a Git diff assistant. Given a code diff, you provide clear and concise information on its content. Always wrap file names, functions, objects and similar in backticks (`). Start your reply with "This PR". Do not mention imports and negligible changes. Follow the user instructions carefully.'
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -38,7 +38,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
       {
         role: "user",
         content:
-          'Clearly explain the focus of this PR in less than 300 characters. Then continue with the text "\n\n### Detailed summary\n" and make a list of all notable changes.'
+          'Clearly explain the focus of this PR in less than 300 characters. Then write "\n\n### Detailed summary\n" followed by all notable changes formatted as a bullet list.'
       }
     ]
 
