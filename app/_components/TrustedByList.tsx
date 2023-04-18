@@ -6,6 +6,8 @@ import { getRepositories } from "@utils/github/getRepositories"
 import { githubColors } from "@utils/githubColors"
 import Image from "next/image"
 
+const initItems = 6
+
 export async function TrustedByList() {
   const installations = await getInstallations()
   const ids = installations.map((installation) => Number(installation.id))
@@ -50,7 +52,7 @@ export async function TrustedByList() {
   }
 
   return (
-    <ListIterator initItems={6}>
+    <ListIterator initItems={initItems}>
       {topUsersRepos.map((repo) => (
         <a
           className="flex h-48 w-full flex-col justify-between rounded-md border border-gray-700 bg-[#0d1117] p-4 hover:bg-gray-800/60"
@@ -105,5 +107,30 @@ export async function TrustedByList() {
         </a>
       ))}
     </ListIterator>
+  )
+}
+
+export function TrustedByListSkeleton() {
+  return (
+    <div className="grid animate-pulse grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {[...Array(initItems).keys()].map((key) => (
+        <div
+          className="flex h-48 w-full flex-col justify-between rounded-md border border-gray-700 bg-[#0d1117] p-4 hover:bg-gray-800/60"
+          key={key}
+        >
+          <div>
+            <div className="mb-4 flex items-center">
+              <div className="mr-2 h-10 w-10 rounded-full bg-gray-700" />
+              <div className="h-4 w-32 rounded-md bg-gray-700" />
+            </div>
+            <div className="space-y-3">
+              <div className="h-3 rounded-md bg-gray-700" />
+              <div className="h-3 rounded-md bg-gray-700" />
+              <div className="h-3 rounded-md bg-gray-700" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
