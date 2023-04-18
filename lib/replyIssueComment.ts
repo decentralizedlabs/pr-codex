@@ -44,6 +44,8 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
       const description = `> ${question}\n\n@${sender.login} ${codexResponse}`
 
       if (diff_hunk) {
+        // TODO: Also use code diff of the `path` instead of just `diff_hunk`
+        // Review comment
         const { commit_id, path, line, side, start_line, start_side, id } = {
           commit_id: comment.commit_id,
           path: comment.path,
@@ -68,6 +70,7 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
           in_reply_to: id
         })
       } else {
+        // Issue comment
         await octokit.issues.createComment({
           owner,
           repo,
