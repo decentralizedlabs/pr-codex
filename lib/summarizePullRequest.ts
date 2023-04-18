@@ -61,11 +61,14 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
         : ""
     }\n\n> ✨ Ask PR-Codex anything about this PR by commenting with \`${codexCommand}{your question}\`\n\n${endDescription}`
 
+    const initBody = pr.body?.split(startDescription)[0]?.trim()
+    const endBody = pr.body?.split(endDescription)[1]?.trim()
+
     const description = hasCodexCommented
-      ? pr.body.split(startDescription)[0] +
+      ? (initBody ? initBody + "\n\n" : "") +
         prCodexText +
-        pr.body.split(endDescription)[1]
-      : (pr.body ?? "") + prCodexText
+        (endBody ? "\n\n" + endBody : "")
+      : (pr.body ? pr.body + "\n\n" : "") + prCodexText
 
     await octokit.issues.update({
       owner,

@@ -5,7 +5,7 @@ import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
 const systemPrompt =
-  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
+  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be specific and concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
 
 export async function replyIssueComment(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -44,6 +44,8 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
       const description = `> ${question}\n\n@${sender.login} ${codexResponse}`
 
       if (diff_hunk) {
+        // TODO: Also use code diff of the `path` instead of just `diff_hunk`
+        // Review comment
         const { commit_id, path, line, side, start_line, start_side, id } = {
           commit_id: comment.commit_id,
           path: comment.path,
@@ -68,6 +70,7 @@ export async function replyIssueComment(payload: any, octokit: Octokit) {
           in_reply_to: id
         })
       } else {
+        // Issue comment
         await octokit.issues.createComment({
           owner,
           repo,
