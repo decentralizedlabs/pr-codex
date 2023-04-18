@@ -1,4 +1,5 @@
-import { TrustedByList } from "./TrustedByList"
+import { Suspense } from "react"
+import { TrustedByList, TrustedByListSkeleton } from "./TrustedByList"
 
 export const revalidate = 60 * 60 * 3 // 3 hours
 
@@ -8,8 +9,10 @@ export function TrustedBy() {
       <h2 className="mb-12 text-center text-2xl font-bold tracking-tight text-gray-400">
         Trusted by
       </h2>
-      {/* @ts-expect-error Async Server Component */}
-      <TrustedByList />
+      <Suspense fallback={<TrustedByListSkeleton />}>
+        {/* @ts-expect-error Async Server Component */}
+        <TrustedByList />
+      </Suspense>
     </div>
   )
 }
