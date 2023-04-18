@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import { TrustedByList, TrustedByListSkeleton } from "./TrustedByList"
 
-export const revalidate = 60 * 60 * 3 // 3 hours
+export const revalidate = 3600 // 1 hour
 
 export function TrustedBy() {
   return (
