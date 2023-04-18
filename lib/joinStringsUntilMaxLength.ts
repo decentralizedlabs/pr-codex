@@ -4,21 +4,31 @@ export function joinStringsUntilMaxLength(
 ) {
   let codeDiff = ""
   let currentLength = 0
-  let maxLengthExceeded = false
+  let skippedFiles: string[] = []
 
   for (const file of parsedFiles) {
+    if (currentLength === maxLength) {
+      const filepath = file.split("\n")[0]
+      skippedFiles.push(`\`${filepath}\``)
+      continue
+    }
+
     const fileLength = file.length
 
     if (currentLength + fileLength <= maxLength) {
       codeDiff += file
       currentLength += fileLength
     } else {
-      maxLengthExceeded = true
+      const filepath = file.split("\n")[0]
       const remainingLength = maxLength - currentLength
       codeDiff += file.slice(0, remainingLength)
-      break
+      currentLength = maxLength
+      skippedFiles.push(`\`${filepath}\``)
     }
   }
 
-  return { codeDiff, maxLengthExceeded }
+  return {
+    codeDiff,
+    skippedFiles
+  }
 }

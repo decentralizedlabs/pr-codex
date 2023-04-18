@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest"
 import { joinStringsUntilMaxLength } from "../lib/joinStringsUntilMaxLength"
-import { maxChanges, maxCodeDiff } from "./constants"
+import { maxCodeDiff } from "./constants"
 import { parseDiff } from "./parseDiff"
 
 export const getCodeDiff = async (
@@ -23,12 +23,12 @@ export const getCodeDiff = async (
   // Parses the diff content and returns the parsed files.
   // If the number of changes in a file is greater than `maxChanges` changes, the file will be skipped.
   // The codeDiff is the joined string of parsed files, up to a max length of `maxCodeDiff`.
-  const { parsedFiles, skippedFiles } = parseDiff(diffContent, maxChanges)
+  const { parsedFiles } = parseDiff(diffContent)
 
-  const { codeDiff, maxLengthExceeded } = joinStringsUntilMaxLength(
+  const { codeDiff, skippedFiles } = joinStringsUntilMaxLength(
     parsedFiles,
     maxCodeDiff
   )
 
-  return { codeDiff, skippedFiles, maxLengthExceeded }
+  return { codeDiff, skippedFiles }
 }

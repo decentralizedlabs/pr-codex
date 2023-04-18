@@ -9,7 +9,7 @@ import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
 const systemPrompt =
-  'You are a Git diff assistant. Given a code diff, you provide clear and concise information on its content. Always wrap file names, functions, objects and similar in backticks (`). Start your reply with "This PR". Do not mention imports and negligible changes. Follow the user instructions carefully.'
+  'You are a Git diff assistant. Given a code diff, you provide clear information on its content. Always wrap file names, functions, objects and similar in backticks (`). Start your reply with "This PR". Do not mention imports and negligible changes. Follow the user instructions carefully.'
 
 export async function summarizePullRequest(payload: any, octokit: Octokit) {
   // Get relevant PR information
@@ -21,7 +21,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
   }
 
   // Get the diff content using Octokit and GitHub API
-  const { codeDiff, skippedFiles, maxLengthExceeded } = await getCodeDiff(
+  const { codeDiff, skippedFiles } = await getCodeDiff(
     owner,
     repo,
     pull_number,
@@ -38,7 +38,7 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
       {
         role: "user",
         content:
-          'Clearly explain the focus of this PR in less than 300 characters. Then write "\n\n### Detailed summary\n" followed by all notable changes formatted as a bullet list.'
+          'Clearly explain the focus of this PR in less than 300 characters. Then write "\n\n### Detailed summary\n" followed by all notable changes formatted as a bullet list. Be specific and concise.'
       }
     ]
 
@@ -58,10 +58,6 @@ export async function summarizePullRequest(payload: any, octokit: Octokit) {
         ? `\n\n> The following files were skipped due to too many changes: ${skippedFiles.join(
             ", "
           )}`
-        : ""
-    }${
-      maxLengthExceeded
-        ? "\n\n> The code diff in this PR exceeds the max number of characters, so this overview may be incomplete."
         : ""
     }\n\n> ✨ Ask PR-Codex anything about this PR by commenting with \`${codexCommand}{your question}\`\n\n${endDescription}`
 
