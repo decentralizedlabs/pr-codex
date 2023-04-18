@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write . --ignore-path .gitignore",
-    "summarize": "npx ts-node scripts/summarize"
+    "summarize": "npx ts-node scripts/summarize",
+    "reply": "npx ts-node scripts/reply"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
