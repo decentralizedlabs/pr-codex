@@ -5,7 +5,7 @@ import { generateChatGpt } from "../utils/generateChatGpt"
 import { getCodeDiff } from "../utils/getCodeDiff"
 
 const systemPrompt =
-  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
+  "You are a Git diff assistant. Given a code diff, you answer any question related to it. Be specific and concise. Use line breaks and lists to improve readability. Always wrap file names, functions, objects and similar in backticks (`)."
 
 export async function replyIssueComment(payload: any, octokit: Octokit) {
   // Get relevant PR information
