@@ -12,7 +12,7 @@ export const generateChatGpt = async (
       "chat",
       {
         model: "gpt-3.5-turbo",
-        temperature: 0.7,
+        temperature: 0.5,
         messages
       },
       { apiKey: process.env.OPENAI_API_KEY }
