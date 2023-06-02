@@ -16,10 +16,6 @@ export async function TrustedByList() {
   const reposByStars = publicRepos.sort(
     (a, b) => b.stargazers_count - a.stargazers_count
   )
-  const topUsersRepos = reposByStars.filter(
-    (repo, index) =>
-      reposByStars.findIndex((r) => r.owner.id === repo.owner.id) === index
-  )
 
   {
     /*
@@ -53,7 +49,7 @@ export async function TrustedByList() {
 
   return (
     <ListIterator initItems={initItems}>
-      {topUsersRepos.map((repo) => (
+      {reposByStars.map((repo) => (
         <a
           className="flex h-48 w-full flex-col justify-between rounded-md border border-gray-700 bg-[#0d1117] p-4 hover:bg-gray-800/60"
           key={repo.id}
