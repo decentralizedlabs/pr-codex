@@ -14,6 +14,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mono: ["var(--font-space-mono)"]
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
