@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${GeistMono.variable} font-mono`}>
+    <html lang="en" className={`${GeistMono.className}`}>
       <body>
         <AppLayout>{children}</AppLayout>
         <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
