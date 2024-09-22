@@ -14,35 +14,52 @@ export async function getRepositories(ids: number[]) {
     clientSecret
   })
 
-  const req = Promise.all(
-    ids.map(async (id) => {
-      try {
-        // Authenticate as the GitHub App installation
-        const { token } = await auth({
-          type: "installation",
-          installationId: id
-        })
+  async function fetchRepositoriesForInstallation(id: number) {
+    try {
+      const { token } = await auth({
+        type: "installation",
+        installationId: id
+      })
 
-        // Create a new Octokit instance with the authenticated token
-        const octokit = new Octokit({ auth: token })
+      const octokit = new Octokit({ auth: token })
 
-        return octokit.request("GET /installation/repositories", {
-          headers: {
-            "X-GitHub-Api-Version": "2022-11-28"
-          },
-          per_page: 100 // max 100
-        })
-      } catch (error) {
-        return null
+      let page = 1
+      const per_page = 100
+      let allRepositories = []
+
+      while (true) {
+        const { data } = await octokit.request(
+          "GET /installation/repositories",
+          {
+            headers: {
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            per_page,
+            page
+          }
+        )
+
+        allRepositories.push(...data.repositories)
+
+        if (data.repositories.length < per_page) {
+          break
+        }
+
+        page++
       }
-    })
-  )
 
-  const res = await req
+      return allRepositories
+    } catch (error) {
+      console.error(
+        `Error fetching repositories for installation ${id}:`,
+        error
+      )
+      return []
+    }
+  }
 
-  const repositories = res
-    .filter((repo) => !!repo)
-    .flatMap((repo) => repo.data.repositories)
+  const repositoriesPromises = ids.map(fetchRepositoriesForInstallation)
+  const repositoriesArrays = await Promise.all(repositoriesPromises)
 
-  return repositories
+  return repositoriesArrays.flat()
 }
