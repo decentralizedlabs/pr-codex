@@ -16,24 +16,33 @@ export async function getRepositories(ids: number[]) {
 
   const req = Promise.all(
     ids.map(async (id) => {
-      // Authenticate as the GitHub App installation
-      const { token } = await auth({ type: "installation", installationId: id })
+      try {
+        // Authenticate as the GitHub App installation
+        const { token } = await auth({
+          type: "installation",
+          installationId: id
+        })
 
-      // Create a new Octokit instance with the authenticated token
-      const octokit = new Octokit({ auth: token })
+        // Create a new Octokit instance with the authenticated token
+        const octokit = new Octokit({ auth: token })
 
-      return octokit.request("GET /installation/repositories", {
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28"
-        },
-        per_page: 100 // max 100
-      })
+        return octokit.request("GET /installation/repositories", {
+          headers: {
+            "X-GitHub-Api-Version": "2022-11-28"
+          },
+          per_page: 100 // max 100
+        })
+      } catch (error) {
+        return null
+      }
     })
   )
 
   const res = await req
 
-  const repositories = res.map((repo) => repo.data.repositories).flat()
+  const repositories = res
+    .filter((repo) => !!repo)
+    .flatMap((repo) => repo.data.repositories)
 
   return repositories
 }
