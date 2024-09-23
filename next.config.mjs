@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const config = {
+  transpilePackages: ["geist"],
   experimental: {
     appDir: true
   },
