@@ -35,6 +35,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
+    "scripts/reply.ts",
     "scripts/summarize.ts",
     "postcss.config.cjs"
   ],
