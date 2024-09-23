@@ -1,65 +1,47 @@
 import { createAppAuth } from "@octokit/auth-app"
 import { Octokit } from "@octokit/rest"
 
+const appId = Number(process.env.GH_APP_ID)
+const privateKey = process.env.GH_PK
+
 export async function getRepositories(ids: number[]) {
-  const appId = Number(process.env.GH_APP_ID)
-  const privateKey = process.env.GH_PK
-  const clientId = process.env.GH_APP_CLIENT_ID
-  const clientSecret = process.env.GH_APP_CLIENT_SECRET
-
-  const auth = createAppAuth({
-    appId,
-    privateKey,
-    clientId,
-    clientSecret
-  })
-
   async function fetchRepositoriesForInstallation(id: number) {
-    try {
-      const { token } = await auth({
-        type: "installation",
+    const installationOctokit = new Octokit({
+      authStrategy: createAppAuth,
+      auth: {
+        appId,
+        privateKey,
         installationId: id
-      })
+      }
+    })
 
-      const octokit = new Octokit({ auth: token })
+    let repositories: any[] = []
+    let page = 1
+    let hasNextPage = true
+    try {
+      while (hasNextPage) {
+        const response =
+          await installationOctokit.rest.apps.listReposAccessibleToInstallation(
+            {
+              per_page: 100,
+              page: page
+            }
+          )
 
-      let page = 1
-      const per_page = 100
-      let allRepositories = []
-
-      while (true) {
-        const { data } = await octokit.request(
-          "GET /installation/repositories",
-          {
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28"
-            },
-            per_page,
-            page
-          }
-        )
-
-        allRepositories.push(...data.repositories)
-
-        if (data.repositories.length < per_page) {
-          break
-        }
-
+        repositories = repositories.concat(response.data.repositories)
+        hasNextPage = response.data.total_count > repositories.length
         page++
       }
-
-      return allRepositories
     } catch (error) {
-      console.error(
-        `Error fetching repositories for installation ${id}:`,
-        error
-      )
-      return []
+      console.error(error.message)
     }
+
+    return repositories
   }
 
-  const repositoriesPromises = ids.map(fetchRepositoriesForInstallation)
-  const repositoriesArrays = await Promise.all(repositoriesPromises)
+  const repos = ids.map((id) => fetchRepositoriesForInstallation(id))
+
+  const repositoriesArrays = await Promise.all(repos)
 
   return repositoriesArrays.flat()
 }

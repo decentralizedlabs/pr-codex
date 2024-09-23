@@ -1,22 +1,12 @@
 import Fork from "@components/icons/Fork"
 import Star from "@components/icons/Star"
 import { ListIterator } from "@components/ui"
-import { getInstallations } from "@utils/github/getInstallations"
-import { getRepositories } from "@utils/github/getRepositories"
 import { githubColors } from "@utils/githubColors"
 import Image from "next/image"
 
 const initItems = 12
 
-export async function TrustedByList() {
-  const installations = await getInstallations()
-  const ids = installations.map((installation) => Number(installation.id))
-  const repositories = await getRepositories(ids)
-  const publicRepos = repositories.filter((repo) => !repo.private)
-  const reposByStars = publicRepos.sort(
-    (a, b) => b.stargazers_count - a.stargazers_count
-  )
-
+export async function TrustedByList({ repos }: { repos: any[] }) {
   {
     /*
     <div className="max-w-2xl mx-auto text-center">
@@ -49,7 +39,7 @@ export async function TrustedByList() {
 
   return (
     <ListIterator initItems={initItems}>
-      {reposByStars.map((repo) => (
+      {repos.map((repo) => (
         <a
           className="flex h-48 w-full flex-col justify-between rounded-md border border-gray-700 bg-[#0d1117] p-4 hover:bg-gray-800/60"
           key={repo.id}
