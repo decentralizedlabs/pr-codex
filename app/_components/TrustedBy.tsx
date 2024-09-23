@@ -17,7 +17,7 @@ export async function TrustedBy() {
   return (
     <div className="mx-auto max-w-lg px-4 pb-16 pt-24 md:max-w-screen-xl md:px-8">
       <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-gray-400">
-        Trusted by {reposByStars?.length} repositories
+        Summarizing {reposByStars?.length} great repos
       </h2>
       <Suspense fallback={<TrustedByListSkeleton />}>
         {/* @ts-expect-error Async Server Component */}
